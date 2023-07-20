@@ -14,6 +14,7 @@ router.post("/register" , async(req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    // creating a new instance of the model
     const newUser = new UserModel({ username ,  password: hashedPassword })
     await newUser.save();
 
