@@ -29,41 +29,41 @@ router.post("/", async (req, res) => {
 // to save a recipe
 router.put("/", async (req, res) => {
   // creating a new instance of the model
-
   try {
-    const recipe = await RecipeModel.findById(req.body.recipeID);
-    const user = await UserModel.findById(req.body.userID);
+    const recipe = await RecipeModel.findById(req.body.recipeId);
+    const user = await UserModel.findById(req.body.userId);
 
     user.savedRecipes.push(recipe);
     await user.save();
 
-    res.json({ savedRecipes: user.savedRecipes});
+    res.json({ savedRecipes: user.savedRecipes });
   } catch (err) {
     res.json(err);
   }
 });
 
-router.get("/saved/ids", async (req, res) => {
-    try{
-        const user = await UserModel.findById(req.body.userID);
-        res.json({ savedRecipes: user?.savedRecipes })
-    }catch(err){
-        res.json(err);
-    }
-})
+router.get("/saved/ids/:userId", async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.params.userId);
+    res.json({ savedRecipes: user?.savedRecipes });
+  } catch (err) {
+    res.json(err);
+  }
+});
 
-// gettting all saved recipes
-router.get("/saved", async (req, res) => {
-    try{
-        const user = await UserModel.findById(req.body.userID);
-        const savedRecipes = await RecipeModel.find({
-            _id: { $id: user.savedRecipes}
-        })
-        res.json({ savedRecipes })
-    }catch(err){
-        res.json(err);
-    }
-})
-
+// getting all saved recipes
+router.get("/saved/:userId", async (req, res) => {
+  try {
+    // problem faced
+    // https://stackoverflow.com/questions/14940660/whats-mongoose-error-cast-to-objectid-failed-for-value-xxx-at-path-id
+    const user = await UserModel.findById(req.params.userId);
+    const savedRecipes = await RecipeModel.find({
+      _id: { $in: user.savedRecipes },
+    });
+    res.json({ savedRecipes });
+  } catch (err) {
+    res.json(err);
+  }
+});
 
 export { router as RecipesRouter };

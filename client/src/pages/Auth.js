@@ -40,10 +40,9 @@ const Login = () => {
   const onFinish = async (values) => {
     try{
       const response = await axios.post("http://localhost:4000/auth/login",  values)
-      console.log("respons", response);
       const token = response.data.token;
       setCookies("access_token", token)
-      window.localStorage.setItem("userId", response.data.userID);
+      window.localStorage.setItem("userId", response.data.userId);
       navigate("/");
       notification.success({
         message: `Welcome ${username}`

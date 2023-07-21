@@ -13,7 +13,6 @@ const Navbar = () => {
     navigate("/auth");
   }
 
-  console.log("cook", cookies);
   return (
     <div className="navbar">
       <Link to="/">Home</Link>
