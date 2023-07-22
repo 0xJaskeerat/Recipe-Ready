@@ -1,6 +1,7 @@
 import { Button } from 'antd';
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import styled from "styled-components";
 import { useGetUserID } from '../hooks/useGetUserID';
 
@@ -13,6 +14,7 @@ const StyledSaveButton = styled(Button)`
 const Home = () => {
   const [recipes, setRecipes] = useState();
   const [savedRecipes , setSavedRecipes] = useState();
+  const [cookies,_] = useCookies(["access_token"]);
 
   const userId = useGetUserID();
 
@@ -36,12 +38,17 @@ const Home = () => {
     }
     
     fetchRecipe();
-    fetchSavedRecipes();
+    if(cookies.access_token) fetchSavedRecipes();
   }, []);
 
   const saveRecipe = async (recipeId) => {
     try {
-      const allRecipes = await axios.put("http://localhost:4000/recipes", { recipeId, userId });
+      const allRecipes = await axios.put("http://localhost:4000/recipes", { 
+        recipeId, 
+        userId ,
+      },
+      { headers: { authorization: cookies.access_token }}
+      );
       setSavedRecipes(allRecipes.data.savedRecipes)
     } catch (err) {
       console.log("err", err);

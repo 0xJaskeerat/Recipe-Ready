@@ -1,6 +1,7 @@
 import express from "express";
 import { RecipeModel } from "../models/Recipes.js";
 import { UserModel } from "../models/Users.js";
+import { verifyToken } from './users.js';
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ router.get("/", async (req, res) => {
 });
 
 // to post a new recipe
-router.post("/", async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
   // creating a new instance of the model
   const newRecipe = new RecipeModel(req.body);
   try {
@@ -27,7 +28,7 @@ router.post("/", async (req, res) => {
 });
 
 // to save a recipe
-router.put("/", async (req, res) => {
+router.put("/", verifyToken, async (req, res) => {
   // creating a new instance of the model
   try {
     const recipe = await RecipeModel.findById(req.body.recipeId);

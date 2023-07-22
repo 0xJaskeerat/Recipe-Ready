@@ -8,20 +8,22 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const logout = () => {
-    setCookies("access_token", "")
+    setCookies("access_token", "");
     window.localStorage.removeItem("userId");
     navigate("/auth");
-  }
+  };
 
   return (
     <div className="navbar">
       <Link to="/">Home</Link>
       <Link to="/create">Create Recipes</Link>
-      <Link to="/saved">Saved Recipes</Link>
       {!cookies.access_token ? (
         <Link to="/auth">Login / Register </Link>
       ) : (
-        <Button onClick={logout}>Logout</Button>
+        <>
+          <Link to="/saved">Saved Recipes</Link>
+          <Button onClick={logout}>Logout</Button>
+        </>
       )}
     </div>
   );
