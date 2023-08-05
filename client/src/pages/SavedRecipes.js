@@ -10,7 +10,7 @@ const SavedRecipes = () => {
   useEffect(() => {
     const fetchSavedRecipes = async () => {
       try {
-        const allSavedRecipes = await axios.get(`http://localhost:4000/recipes/saved/${userId}`);
+        const allSavedRecipes = await axios.get(`https://careful-wrap-crab.cyclic.app/recipes/saved/${userId}`);
         setSavedRecipes(allSavedRecipes.data.savedRecipes);
       } catch (err) {
         console.log("err", err);
