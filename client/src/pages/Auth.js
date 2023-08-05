@@ -41,12 +41,18 @@ const Login = () => {
     try{
       const response = await axios.post("http://localhost:4000/auth/login",  values)
       const token = response.data.token;
-      setCookies("access_token", token)
-      window.localStorage.setItem("userId", response.data.userId);
-      navigate("/");
-      notification.success({
-        message: `Welcome ${username}`
-      })
+      if(token){
+        setCookies("access_token", token)
+        window.localStorage.setItem("userId", response.data.userId);
+        navigate("/");
+        notification.success({
+          message: `Welcome ${username}`
+        })
+      }else{
+        notification.error({
+          message: "Your account doesn't exist, register first"
+        })
+      }
     }
     catch(err) {
       console.log("er",err)
