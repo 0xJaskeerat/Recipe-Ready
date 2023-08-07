@@ -39,7 +39,7 @@ const Login = () => {
 
   const onFinish = async (values) => {
     try{
-      const response = await axios.post("http://localhost:4000/auth/login",  values)
+      const response = await axios.post("https://careful-wrap-crab.cyclic.app/auth/login",  values)
       const token = response.data.token;
       if(token){
         setCookies("access_token", token)
@@ -84,7 +84,7 @@ const Register = () => {
 
   const onFinish = async (values) => {
     try{
-      await axios.post("http://localhost:4000/auth/register",  values)
+      await axios.post("https://careful-wrap-crab.cyclic.app/auth/register",  values)
       notification.success({
         message: "Registeration Successfull",
         description: "You can login now"
